@@ -5,7 +5,7 @@ Este é um programa simples em C++ para gerenciar informações sobre alunos, co
 Compile o programa usando um compilador C++ padrão e execute-o no terminal ou em um ambiente de desenvolvimento C++.
 
 ```bash
-g++ seu_programa.cpp -o programa
+g++ ControleDeNotas.cpp -o programa
 ./programa
 ```
 
