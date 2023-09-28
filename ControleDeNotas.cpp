@@ -29,6 +29,31 @@ int main()
         nomes.push_back(nome);
         notas1.push_back(n1);
         notas2.push_back(n2);
+
+        cout << endl;
+    }
+
+    // Ordena alunos e suas notas em ordem alfabética
+    bool trocou;
+    do
+    {
+        trocou = false;
+        for (size_t i = 0; i < nomes.size() - 1; i++)
+        {
+            if (nomes[i] > nomes[i + 1])
+            {
+                std::swap(nomes[i], nomes[i + 1]);
+                std::swap(notas1[i], notas1[i + 1]);
+                std::swap(notas2[i], notas2[i + 1]);
+                trocou = true;
+            }
+        }
+    } while (trocou);
+
+    // Mostra alunos e notas
+    for (size_t i = 0; i < nomes.size(); i++)
+    {
+        cout << nomes[i] << " " << notas1[i] << " " << notas2[i] << endl;
     }
 
     return 0;
