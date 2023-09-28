@@ -1,40 +1,32 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cctype>
 
 using namespace std;
 
-int main()
+// FunÁ„o para adicionar um novo aluno
+void adicionarAluno(vector<string> &nomes, vector<float> &notas1, vector<float> &notas2)
 {
-    vector<string> nomes;
-    vector<float> notas1;
-    vector<float> notas2;
+    string nome;
+    float n1, n2;
 
-    int N;
+    cout << "Digite o nome do aluno: ";
+    cin >> nome;
+    cout << "Digite a primeira nota do aluno: ";
+    cin >> n1;
+    cout << "Digite a segunda nota do aluno: ";
+    cin >> n2;
 
-    // Solicita um limite de alunos N e os nomes e notas de cada um dos alunos
-    cout << "Digite o limite de alunos: ";
-    cin >> N;
+    nomes.push_back(nome);
+    notas1.push_back(n1);
+    notas2.push_back(n2);
 
-    for (int i = 0; i < N; i++)
-    {
-        string nome;
-        float n1, n2;
-        cout << "Digite o nome do aluno: ";
-        cin >> nome;
-        cout << "Digite a primeira nota do aluno: ";
-        cin >> n1;
-        cout << "Digite a segunda nota do aluno: ";
-        cin >> n2;
-        nomes.push_back(nome);
-        notas1.push_back(n1);
-        notas2.push_back(n2);
+    cout << endl;
+}
 
-        cout << endl;
-    }
-
-    // Ordena alunos e suas notas em ordem alfab√©tica
+// FunÁ„o para ordenar os alunos por ordem alfabÈtica
+void ordenarAlunos(vector<string> &nomes, vector<float> &notas1, vector<float> &notas2)
+{
     bool trocou;
     do
     {
@@ -50,81 +42,44 @@ int main()
             }
         }
     } while (trocou);
+}
 
-    // Inclus√£o e/ou exclus√£o de algum aluno
-    char resposta1, resposta2;
+// FunÁ„o para excluir um aluno por nome
+void excluirAluno(vector<string> &nomes, vector<float> &notas1, vector<float> &notas2)
+{
     string nome;
-    float n1, n2;
-    do
+
+    cout << "Nome do aluno que vai ser removido: ";
+    cin >> nome;
+
+    bool encontrado = false;
+
+    for (int i = 0; i < nomes.size(); i++)
     {
-        cout << "Deseja incluir mais alunos? (s/n) ";
-        cin >> resposta1;
-        tolower(resposta1);
-
-        if (resposta1 == 's' && nomes.size() < N) // se a resposta for sim e tiver vaga
+        if (nomes[i] == nome)
         {
-            cout << "Nome do novo aluno: ";
-            cin >> nome;
-
-            cout << "Digite a primeira nota do aluno: ";
-            cin >> n1;
-            cout << "Digite a segunda nota do aluno: ";
-            cin >> n2;
-
+            nomes.erase(nomes.begin() + i);
+            notas1.erase(notas1.begin() + i);
+            notas2.erase(notas2.begin() + i);
+            cout << nome << " removido(a) com sucesso." << endl;
             cout << "---" << endl;
-
-            size_t pos = 0;
-            while (pos < nomes.size() && nome > nomes[pos])
-            {
-                pos++;
-            }
-
-            nomes.insert(nomes.begin() + pos, nome);
-            notas1.insert(notas1.begin() + pos, n1);
-            notas2.insert(notas2.begin() + pos, n2);
+            encontrado = true;
+            break;
         }
-        else if (resposta1 == 's' && nomes.size() >= N) // se a resposta for sim mas n√£o tiver vaga
-        {
-            cout << "Limite de alunos atingido." << endl;
-            resposta1 = 'n';
-        }
+    }
 
-        cout << "Deseja excluir algum aluno? (s/n)";
-        cin >> resposta2;
+    if (!encontrado)
+    {
+        cout << "Aluno inexistente." << endl;
+        cout << "---" << endl;
+    }
+}
 
-        if (resposta2 == 's')
-        {
-            cout << "Nome do aluno que vai ser removido: ";
-            cin >> nome;
-
-            bool encontrado = false; // Vari√°vel de sinaliza√ß√£o
-
-            for (int i = 0; i < nomes.size(); i++)
-            {
-                if (nomes[i] == nome)
-                {
-                    nomes.erase(nomes.begin() + i);
-                    notas1.erase(notas1.begin() + i);
-                    notas2.erase(notas2.begin() + i);
-                    cout << nome << " removido(a) com sucesso." << endl;
-                    cout << "---" << endl;
-                    encontrado = true; // o aluno foi encontrado e removido
-                    break;
-                }
-            }
-
-            if (!encontrado)
-            {
-                cout << "Aluno inexistente." << endl;
-                cout << "---" << endl;
-            }
-        }
-    } while (resposta1 == 's' || resposta2 == 's');
-
-    cout << "====================" << endl;
-
-    // Exibir boletins, com m√©dias e se est√£o aprovados ou reprovados (media >= 7)
+// FunÁ„o para exibir boletins dos alunos
+void exibirBoletins(const vector<string> &nomes, const vector<float> &notas1, const vector<float> &notas2)
+{
     float media;
+
     for (size_t i = 0; i < nomes.size(); i++)
     {
         media = (notas1[i] + notas2[i]) / 2;
@@ -137,81 +92,133 @@ int main()
             cout << nomes[i] << ": " << media << " -- reprovado" << endl;
         }
     }
+}
 
-    // Procedimento Alterar notas de algum aluno
+// FunÁ„o para alterar as notas de um aluno
+void alterarNotas(vector<string> &nomes, vector<float> &notas1, vector<float> &notas2)
+{
+    string nome;
+
+    cout << "Nome do aluno para alterar nota: ";
+    cin >> nome;
+
+    bool encontrado = false;
+
+    for (size_t i = 0; i < nomes.size(); i++)
+    {
+        if (nomes[i] == nome)
+        {
+            cout << "Notas do(a) " << nomes[i] << ":" << endl;
+            cout << "Nota 1: " << notas1[i] << endl;
+            cout << "Nota 2: " << notas2[i] << endl;
+            cout << "---" << endl;
+
+            int opcaoEscolhida;
+            float novaNota;
+
+            do
+            {
+                cout << "1 - Alterar a primeira nota" << endl;
+                cout << "2 - Alterar a segunda nota" << endl;
+                cout << "0 - Nenhuma" << endl;
+                cout << "Digite o numero correspondente: ";
+                cin >> opcaoEscolhida;
+
+                switch (opcaoEscolhida)
+                {
+                case 1:
+                    cout << "Nova nota 1 do aluno: ";
+                    cin >> novaNota;
+                    notas1[i] = novaNota;
+                    cout << "---" << endl;
+                    break;
+                case 2:
+                    cout << "Nova nota 2 do aluno: ";
+                    cin >> novaNota;
+                    notas2[i] = novaNota;
+                    cout << "---" << endl;
+                    break;
+                default:
+                    break;
+                }
+            } while (opcaoEscolhida != 0);
+
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (!encontrado)
+    {
+        cout << "Aluno inexistente." << endl;
+        cout << "---" << endl;
+    }
+}
+
+int main()
+{
+    vector<string> nomes;
+    vector<float> notas1;
+    vector<float> notas2;
+
+    int N = 0;
+
+    // Solicita um limite de alunos N e os nomes e notas de cada um dos alunos
+    cout << "Digite o limite de alunos: ";
+    cin >> N;
+
+    char resposta1, resposta2;
+    for (int i = 0; i < N; i++)
+    {
+        adicionarAluno(nomes, notas1, notas2);
+    }
+
+    cout << "====================" << endl;
+
+    // Ordena alunos e suas notas em ordem alfabÈtica
+    ordenarAlunos(nomes, notas1, notas2);
+
+    // Incluir ou excluir algum aluno
+    do
+    {
+        cout << "Deseja incluir mais alunos? (s/n) ";
+        cin >> resposta1;
+
+        if (resposta1 == 's' && N > nomes.size())
+        {
+            adicionarAluno(nomes, notas1, notas2);
+        }
+        else if (resposta1 == 's' && N <= nomes.size())
+        {
+            cout << "Limite de alunos atingido." << endl;
+            resposta1 = 'n';
+        }
+
+        cout << "Deseja excluir algum aluno? (s/n)";
+        cin >> resposta2;
+
+        if (resposta2 == 's')
+        {
+            excluirAluno(nomes, notas1, notas2);
+        }
+    } while (resposta1 == 's' || resposta2 == 's');
+
+    // Exibir boletins, com mÈdias e se est„o aprovados ou reprovados (media >= 7)
+    exibirBoletins(nomes, notas1, notas2);
+
+    // Alterar notas de algum aluno
     do
     {
         cout << "Deseja alterar alguma nota? (s/n) ";
         cin >> resposta1;
-        tolower(resposta1); 
 
         if (resposta1 == 's')
         {
-            string nome;
-            cout << "Nome do aluno para alterar nota: ";
-            cin >> nome;
-
-            bool encontrado = false;
-
-            for (size_t i = 0; i < nomes.size(); i++)
-            {
-                if (nomes[i] == nome)
-                {
-                    cout << "Notas do(a) " << nomes[i] << ":" << endl;
-                    cout << "Nota 1: " << notas1[i] << endl;
-                    cout << "Nota 2: " << notas2[i] << endl;
-                    cout << "---" << endl;
-
-                    int opcaoEscolhida;
-                    float novaNota;
-
-                    do
-                    {
-                        cout << "1 - Alterar a primeira nota" << endl;
-                        cout << "2 - Alterar a segunda nota" << endl;
-                        cout << "0 - Nenhuma" << endl;
-                        cout << "Digite o numero correspondente: ";
-                        cin >> opcaoEscolhida;
-
-                        switch (opcaoEscolhida)
-                        {
-                        case 1:
-                            cout << "Nova nota 1 do aluno: ";
-                            cin >> novaNota;
-                            notas1[i] = novaNota;
-                            cout << "---" << endl;
-                            break;
-                        case 2:
-                            cout << "Nova nota 2 do aluno: ";
-                            cin >> novaNota;
-                            notas2[i] = novaNota;
-                            cout << "---" << endl;
-                            break;
-                        default:
-                            break;
-                        }
-                    } while (opcaoEscolhida != 0);
-
-                    encontrado = true;
-                    break;
-                }
-            }
-
-            if (!encontrado)
-            {
-                cout << "Aluno inexistente." << endl;
-                cout << "---" << endl;
-            }
+            alterarNotas(nomes, notas1, notas2);
         }
     } while (resposta1 == 's');
 
-    // Mostra alunos e notas
-    cout << "Alunos e suas notas:" << endl;
-    for (size_t i = 0; i < nomes.size(); i++)
-    {
-        cout << nomes[i] << " " << notas1[i] << " " << notas2[i] << endl;
-    }
+    exibirBoletins(nomes, notas1, notas2);
 
     return 0;
-
 }
