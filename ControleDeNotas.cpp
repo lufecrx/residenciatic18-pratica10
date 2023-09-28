@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cctype>
 
 using namespace std;
 
@@ -57,7 +58,8 @@ int main()
     do
     {
         cout << "Deseja incluir mais alunos? (s/n) ";
-        cin >> resposta1.tolower();
+        cin >> resposta1;
+        tolower(resposta1);
 
         if (resposta1 == 's' && nomes.size() < N) // se a resposta for sim e tiver vaga
         {
@@ -136,6 +138,73 @@ int main()
         }
     }
 
+    // Procedimento Alterar notas de algum aluno
+    do
+    {
+        cout << "Deseja alterar alguma nota? (s/n) ";
+        cin >> resposta1;
+        tolower(resposta1); 
+
+        if (resposta1 == 's')
+        {
+            string nome;
+            cout << "Nome do aluno para alterar nota: ";
+            cin >> nome;
+
+            bool encontrado = false;
+
+            for (size_t i = 0; i < nomes.size(); i++)
+            {
+                if (nomes[i] == nome)
+                {
+                    cout << "Notas do(a) " << nomes[i] << ":" << endl;
+                    cout << "Nota 1: " << notas1[i] << endl;
+                    cout << "Nota 2: " << notas2[i] << endl;
+                    cout << "---" << endl;
+
+                    int opcaoEscolhida;
+                    float novaNota;
+
+                    do
+                    {
+                        cout << "1 - Alterar a primeira nota" << endl;
+                        cout << "2 - Alterar a segunda nota" << endl;
+                        cout << "0 - Nenhuma" << endl;
+                        cout << "Digite o numero correspondente: ";
+                        cin >> opcaoEscolhida;
+
+                        switch (opcaoEscolhida)
+                        {
+                        case 1:
+                            cout << "Nova nota 1 do aluno: ";
+                            cin >> novaNota;
+                            notas1[i] = novaNota;
+                            cout << "---" << endl;
+                            break;
+                        case 2:
+                            cout << "Nova nota 2 do aluno: ";
+                            cin >> novaNota;
+                            notas2[i] = novaNota;
+                            cout << "---" << endl;
+                            break;
+                        default:
+                            break;
+                        }
+                    } while (opcaoEscolhida != 0);
+
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (!encontrado)
+            {
+                cout << "Aluno inexistente." << endl;
+                cout << "---" << endl;
+            }
+        }
+    } while (resposta1 == 's');
+
     // Mostra alunos e notas
     cout << "Alunos e suas notas:" << endl;
     for (size_t i = 0; i < nomes.size(); i++)
@@ -144,4 +213,5 @@ int main()
     }
 
     return 0;
+
 }
