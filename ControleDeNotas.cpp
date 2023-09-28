@@ -1,10 +1,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iomanip>
 
 using namespace std;
 
-// Função para adicionar um novo aluno
+// FunÃ§Ã£o para adicionar um novo aluno
 void adicionarAluno(vector<string> &nomes, vector<float> &notas1, vector<float> &notas2)
 {
     string nome;
@@ -17,14 +18,20 @@ void adicionarAluno(vector<string> &nomes, vector<float> &notas1, vector<float> 
     cout << "Digite a segunda nota do aluno: ";
     cin >> n2;
 
-    nomes.push_back(nome);
-    notas1.push_back(n1);
-    notas2.push_back(n2);
+    size_t pos = 0;
+    while (pos < nomes.size() && nome > nomes[pos])
+    {
+        pos++;
+    }
+
+    nomes.insert(nomes.begin() + pos, nome);
+    notas1.insert(notas1.begin() + pos, n1);
+    notas2.insert(notas2.begin() + pos, n2);
 
     cout << endl;
 }
 
-// Função para ordenar os alunos por ordem alfabética
+// FunÃ§Ã£o para ordenar os alunos por ordem alfabÃ©tica
 void ordenarAlunos(vector<string> &nomes, vector<float> &notas1, vector<float> &notas2)
 {
     bool trocou;
@@ -44,7 +51,7 @@ void ordenarAlunos(vector<string> &nomes, vector<float> &notas1, vector<float> &
     } while (trocou);
 }
 
-// Função para excluir um aluno por nome
+// FunÃ§Ã£o para excluir um aluno por nome
 void excluirAluno(vector<string> &nomes, vector<float> &notas1, vector<float> &notas2)
 {
     string nome;
@@ -54,7 +61,7 @@ void excluirAluno(vector<string> &nomes, vector<float> &notas1, vector<float> &n
 
     bool encontrado = false;
 
-    for (int i = 0; i < nomes.size(); i++)
+    for (size_t i = 0; i < nomes.size(); i++)
     {
         if (nomes[i] == nome)
         {
@@ -73,28 +80,32 @@ void excluirAluno(vector<string> &nomes, vector<float> &notas1, vector<float> &n
         cout << "Aluno inexistente." << endl;
         cout << "---" << endl;
     }
+
+    cout << endl;
 }
 
-// Função para exibir boletins dos alunos
+// FunÃ§Ã£o para exibir boletins dos alunos
 void exibirBoletins(const vector<string> &nomes, const vector<float> &notas1, const vector<float> &notas2)
 {
-    float media;
+    cout << "===============================" << endl;
+    cout << "      Boletim dos Alunos      " << endl;
+    cout << "===============================" << endl;
+
+    cout << "Nome\t\tNota 1\tNota 2\tMÃ©dia\tSituaÃ§Ã£o" << endl;
 
     for (size_t i = 0; i < nomes.size(); i++)
     {
-        media = (notas1[i] + notas2[i]) / 2;
-        if (media >= 7)
-        {
-            cout << nomes[i] << ": " << media << " -- aprovado" << endl;
-        }
-        else
-        {
-            cout << nomes[i] << ": " << media << " -- reprovado" << endl;
-        }
+        float media = (notas1[i] + notas2[i]) / 2;
+        string situacao = (media >= 7) ? "Aprovado" : "Reprovado";
+
+        cout << nomes[i] << "\t\t" << fixed << setprecision(1) << notas1[i] << "\t" << notas2[i] << "\t" << media << "\t" << situacao << endl;
     }
+
+    cout << "===============================" << endl;
+    cout << endl;
 }
 
-// Função para alterar as notas de um aluno
+// FunÃ§Ã£o para alterar as notas de um aluno
 void alterarNotas(vector<string> &nomes, vector<float> &notas1, vector<float> &notas2)
 {
     string nome;
@@ -153,6 +164,8 @@ void alterarNotas(vector<string> &nomes, vector<float> &notas1, vector<float> &n
         cout << "Aluno inexistente." << endl;
         cout << "---" << endl;
     }
+
+    cout << endl;
 }
 
 int main()
@@ -175,7 +188,7 @@ int main()
 
     cout << "====================" << endl;
 
-    // Ordena alunos e suas notas em ordem alfabética
+    // Ordena alunos e suas notas em ordem alfabÃ©tica
     ordenarAlunos(nomes, notas1, notas2);
 
     // Incluir ou excluir algum aluno
@@ -203,7 +216,8 @@ int main()
         }
     } while (resposta1 == 's' || resposta2 == 's');
 
-    // Exibir boletins, com médias e se estão aprovados ou reprovados (media >= 7)
+    // Exibir boletins, com mÃ©dias e se estÃ£o aprovados ou reprovados (media >= 7)
+    cout << endl;
     exibirBoletins(nomes, notas1, notas2);
 
     // Alterar notas de algum aluno
