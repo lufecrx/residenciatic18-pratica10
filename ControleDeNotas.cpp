@@ -50,6 +50,8 @@ int main()
         nomes.push_back(nome);
         notas1.push_back(n1);
         notas2.push_back(n2);
+
+        cout << endl;
     }
 
     exibirBoletins(nomes, notas1, notas2);
