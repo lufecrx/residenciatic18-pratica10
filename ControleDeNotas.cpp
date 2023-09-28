@@ -42,9 +42,9 @@ int main()
         {
             if (nomes[i] > nomes[i + 1])
             {
-                std::swap(nomes[i], nomes[i + 1]);
-                std::swap(notas1[i], notas1[i + 1]);
-                std::swap(notas2[i], notas2[i + 1]);
+                swap(nomes[i], nomes[i + 1]);
+                swap(notas1[i], notas1[i + 1]);
+                swap(notas2[i], notas2[i + 1]);
                 trocou = true;
             }
         }
@@ -57,7 +57,7 @@ int main()
     do
     {
         cout << "Deseja incluir mais alunos? (s/n) ";
-        cin >> resposta1;
+        cin >> resposta1.tolower();
 
         if (resposta1 == 's' && nomes.size() < N) // se a resposta for sim e tiver vaga
         {
@@ -120,6 +120,21 @@ int main()
     } while (resposta1 == 's' || resposta2 == 's');
 
     cout << "====================" << endl;
+
+    // Exibir boletins, com médias e se estão aprovados ou reprovados (media >= 7)
+    float media;
+    for (size_t i = 0; i < nomes.size(); i++)
+    {
+        media = (notas1[i] + notas2[i]) / 2;
+        if (media >= 7)
+        {
+            cout << nomes[i] << ": " << media << " -- aprovado" << endl;
+        }
+        else
+        {
+            cout << nomes[i] << ": " << media << " -- reprovado" << endl;
+        }
+    }
 
     // Mostra alunos e notas
     cout << "Alunos e suas notas:" << endl;
